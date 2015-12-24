@@ -2,9 +2,9 @@
 
 ######作者：exp-sky 时间：2015-12-22
 
-本文源自一次与[TK](http://weibo.com/101174?from=feed&loc=at&nick=tombkeeper&is_all=1)闲聊，期间得知成功绕过CFG的经过与细节(参考：[利用Chakra JIT绕过DEP和CFG])。随即出于对技术的兴趣，也抽出一些时间看了相关的东西，结果发现了另一处绕过CFG的位置。所以这篇文章中提到的思路与技术归根结底是来自[TK]提示的，在此特别感谢。
+本文源自一次与[TK](http://weibo.com/101174?from=feed&loc=at&nick=tombkeeper&is_all=1)闲聊，期间得知成功绕过CFG的经过与细节(参考：[利用Chakra JIT绕过DEP和CFG](http://xlab.tencent.com/cn/2015/12/09/bypass-dep-and-cfg-using-jit-compiler-in-chakra-engine/))。随即出于对技术的兴趣，也抽出一些时间看了相关的东西，结果发现了另一处绕过CFG的位置。所以这篇文章中提到的思路与技术归根结底是来自[TK](http://weibo.com/101174?from=feed&loc=at&nick=tombkeeper&is_all=1)提示的，在此特别感谢。
 
-关于CFG的分析文章已经有很多了，想要了解的话可以参考我之前在HitCon 2015上的演讲([spartan 0day & exploit])。要说明的是，本文的内容即为我演讲中马赛克的部分，至此通过一次内存写实现edge的任意代码执行方法就全部公开了。
+关于CFG的分析文章已经有很多了，想要了解的话可以参考我之前在HitCon 2015上的演讲([spartan 0day & exploit](https://github.com/exp-sky/HitCon-2015-spartan-0day-exploit/blob/master/Spartan%200day%20%26%20Exploit-m.pdf))。要说明的是，本文的内容即为我演讲中马赛克的部分，至此通过一次内存写实现edge的任意代码执行方法就全部公开了。
 
 
 
@@ -316,12 +316,6 @@ chakra!`dynamic initializer for 'DOMFastPathInfo::getterTable''+0x734:
 
 
 ##参考
-[利用Chakra JIT绕过DEP和CFG]
+[利用Chakra JIT绕过DEP和CFG](http://xlab.tencent.com/cn/2015/12/09/bypass-dep-and-cfg-using-jit-compiler-in-chakra-engine/)
 
-[spartan 0day & exploit]
-
-
-
-[TK]: http://weibo.com/101174?from=feed&loc=at&nick=tombkeeper&is_all=1 TK
-[利用Chakra JIT绕过DEP和CFG]: http://xlab.tencent.com/cn/2015/12/09/bypass-dep-and-cfg-using-jit-compiler-in-chakra-engine/ 利用Chakra JIT绕过DEP和CFG
-[spartan 0day & exploit]: https://github.com/exp-sky/HitCon-2015-spartan-0day-exploit/blob/master/Spartan%200day%20%26%20Exploit-m.pdf spartan 0day & exploit
+[spartan 0day & exploit](https://github.com/exp-sky/HitCon-2015-spartan-0day-exploit/blob/master/Spartan%200day%20%26%20Exploit-m.pdf)
