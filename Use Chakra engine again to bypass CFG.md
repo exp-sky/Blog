@@ -2,7 +2,7 @@
 
 By:[exp-sky](https://twitter.com/ExpSky) on 4 Jan 2015
 
-This post is initially inspired by a talk with @TK, during which I learned the process and detail on how to successfully bypass CFG (reference: use Chakra JIT to bypass DEP and CFG). Due to my interest in its technology, I spent some time reading related materials and found another position to bypass CFG. I would like to thanks @TK for enlightening me on the ideas and techniques mentioned in this post.
+This post is initially inspired by a talk with [@TK](https://twitter.com/tombkeeper), during which I learned the process and detail on how to successfully bypass CFG (reference: use Chakra JIT to bypass DEP and CFG). Due to my interest in its technology, I spent some time reading related materials and found another position to bypass CFG. I would like to thanks [@TK](https://twitter.com/tombkeeper) for enlightening me on the ideas and techniques mentioned in this post.
 
 There are plenty of articles that focus on the analysis of CFG, if you are interested, you may refer to my previous speech on HitCon 2015([《spartan 0day & exploit》](https://github.com/exp-sky/HitCon-2015-spartan-0day-exploit/blob/master/Spartan%200day%20%26%20Exploit-m.pdf)). To be clear, this post is the part that is not revealed in my speech. At this point, the method to implement arbitrary code execution on edge through a write to memory is completely revealed.
 
