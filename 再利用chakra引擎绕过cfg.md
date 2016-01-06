@@ -310,7 +310,6 @@ chakra!`dynamic initializer for 'DOMFastPathInfo::getterTable''+0x734:
 .text:002AB475 mov     eax, ecx
 .text:002AB477 pop     ebp
 .text:002AB478 jmp     eax
-.text:00
 ```
 
 
