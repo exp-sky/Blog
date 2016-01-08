@@ -26,24 +26,24 @@ If the function is called for the first time, the execution flow will be:
 
 ```
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-chakra!Js::JavascriptFunction::DeferredParsingThunk
-			|-chakra!Js::JavascriptFunction::DeferredParse
-			|-chakra!NativeCodeGenerator::CheckCodeGenThunk
-				|-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
-					|-jmp_code
-						|-chakra!Js::InterpreterStackFrame::InterpreterThunk
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-chakra!Js::JavascriptFunction::DeferredParsingThunk
+            |-chakra!Js::JavascriptFunction::DeferredParse
+            |-chakra!NativeCodeGenerator::CheckCodeGenThunk
+                |-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
+                    |-jmp_code
+                        |-chakra!Js::InterpreterStackFrame::InterpreterThunk
 ```
 
 If the function is called again, the calling process will be:
 
 ```
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-chakra!NativeCodeGenerator::CheckCodeGenThunk
-			|-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
-				|-jmp_code
-					|-chakra!Js::InterpreterStackFrame::InterpreterThunk
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-chakra!NativeCodeGenerator::CheckCodeGenThunk
+            |-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
+                |-jmp_code
+                    |-chakra!Js::InterpreterStackFrame::InterpreterThunk
 ```
 
 These two calling flows are almost identical. The mainly difference is when the function is called the first time, it has to use the DeferredParsingThunk function to resolve it. This design is for high efficiency. But the subsequent call will directly execute it.
@@ -94,7 +94,7 @@ Next we’ll look at the jit of the function. Here is the script code for test, 
 ```
 function test1(num)
 {
-	return num + 1 + 2 + 3;
+    return num + 1 + 2 + 3;
 }
 
 //trigger jit
@@ -117,7 +117,7 @@ chakra!Js::ScriptFunction::`vftable':
 1d7280c0  00000012 00000000 07076c00 071080a0
 1d7280d0  0a510600 00000000 5fb0b454 00000101
 
-0:010> u poi(poi(07103050+4)+0x10)			//jit code
+0:010> u poi(poi(07103050+4)+0x10)                //jit code
 0a510600 55              push    ebp
 0a510601 8bec            mov     ebp,esp
 0a510603 81fc5cc9d005    cmp     esp,5D0C95Ch
@@ -145,23 +145,23 @@ chakra!Js::ScriptFunction::`vftable':
 0a51064c 83d802          sbb     eax,2
 0a51064f 7c2f            jl      0a510680
 0a510651 8b5d14          mov     ebx,dword ptr [ebp+14h] //ebx = num
-0a510654 8bc3            mov     eax,ebx		//eax = num (num << 1 & 1)
-0a510656 d1f8            sar     eax,1			//eax = num >> 1
+0a510654 8bc3            mov     eax,ebx          //eax = num (num << 1 & 1)
+0a510656 d1f8            sar     eax,1            //eax = num >> 1
 0a510658 732f            jae     0a510689
 0a51065a 8bf0            mov     esi,eax
 0a51065c 8bc6            mov     eax,esi
-0a51065e 40              inc     eax			//num + 1
+0a51065e 40              inc     eax              //num + 1
 0a51065f 7040            jo      0a5106a1
 0a510661 8bc8            mov     ecx,eax
-0a510663 83c102          add     ecx,2			//num + 2
+0a510663 83c102          add     ecx,2            //num + 2
 0a510666 7045            jo      0a5106ad
 0a510668 8bc1            mov     eax,ecx
-0a51066a 83c003          add     eax,3			//num + 3
+0a51066a 83c003          add     eax,3            //num + 3
 0a51066d 704a            jo      0a5106b9
 0a51066f 8bc8            mov     ecx,eax
-0a510671 d1e1            shl     ecx,1			//ecx = num << 1
+0a510671 d1e1            shl     ecx,1            //ecx = num << 1
 0a510673 7050            jo      0a5106c5
-0a510675 41              inc     ecx			//ecx = num += 1
+0a510675 41              inc     ecx              //ecx = num += 1
 0a510676 8bd9            mov     ebx,ecx
 0a510678 8bc3            mov     eax,ebx
 0a51067a 5b              pop     ebx
@@ -177,8 +177,8 @@ Simply speaking, when the called function passes it parameters, it first rotates
 
 ```
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-jit code
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-jit code
 ```
 
 When calling the jit function, the calling stack is as the above, this is the method that chakra engine uses to call the jit function.
@@ -196,9 +196,9 @@ On execution, the above script will use the following function calling process, 
 
 ```
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-chakra!Js::JavascriptExternalFunction::ExternalFunctionThunk //call dom interface function
-			|-dom_interface_function	//EDGEHTML!CFastDOM::CDocument::Trampoline_createElement
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-chakra!Js::JavascriptExternalFunction::ExternalFunctionThunk //call dom interface function
+            |-dom_interface_function    //EDGEHTML!CFastDOM::CDocument::Trampoline_createElement
 ```
 
 When calling the interface function, the Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > > function and the function object used in the subsequent process differ from the ones used previously, it is the Js::JavascriptExternalFunction object. Then similar to the previosfunction call, it also resolves the function pointer in their subject and calls it; finally it enters the wanted DOM interface function.
@@ -228,13 +228,13 @@ After describing the call methods for all sorts of chakra engines, now we’ll c
 ```
 //the first call
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-chakra!Js::JavascriptFunction::DeferredParsingThunk
-			|-chakra!Js::JavascriptFunction::DeferredParse    //obtain NativeCodeGenerator::CheckCodeGenThunk function
-			|-chakra!NativeCodeGenerator::CheckCodeGenThunk
-				|-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
-					|-jmp_code	
-						|-chakra!Js::InterpreterStackFrame::InterpreterThunk
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-chakra!Js::JavascriptFunction::DeferredParsingThunk
+            |-chakra!Js::JavascriptFunction::DeferredParse    //obtain NativeCodeGenerator::CheckCodeGenThunk function
+            |-chakra!NativeCodeGenerator::CheckCodeGenThunk
+                |-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
+                    |-jmp_code
+                        |-chakra!Js::InterpreterStackFrame::InterpreterThunk
 ```
 
 What is not mentioned above is the Js::JavascriptFunction::DeferredParse function in the above process. Function resolution related work is conducted in this function, and this function returns the pointer value of NativeCodeGenerator::CheckCodeGenThunk, then returns Js::JavascriptFunction::DeferredParsingThunk and calls it. The pointer of NativeCodeGenerator::CheckCodeGenThunk is also obtained through resolving the Js::JavascriptFunction object. Here is the code.

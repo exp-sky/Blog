@@ -26,24 +26,24 @@ test();
 
 ```
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-chakra!Js::JavascriptFunction::DeferredParsingThunk
-			|-chakra!Js::JavascriptFunction::DeferredParse
-			|-chakra!NativeCodeGenerator::CheckCodeGenThunk
-				|-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
-					|-jmp_code
-						|-chakra!Js::InterpreterStackFrame::InterpreterThunk
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-chakra!Js::JavascriptFunction::DeferredParsingThunk
+            |-chakra!Js::JavascriptFunction::DeferredParse
+            |-chakra!NativeCodeGenerator::CheckCodeGenThunk
+                |-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
+                    |-jmp_code
+                        |-chakra!Js::InterpreterStackFrame::InterpreterThunk
 ```
 
 如果再次调用这个函数的话，调用流程如下。
 
 ```
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-chakra!NativeCodeGenerator::CheckCodeGenThunk
-			|-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
-				|-jmp_code
-					|-chakra!Js::InterpreterStackFrame::InterpreterThunk
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-chakra!NativeCodeGenerator::CheckCodeGenThunk
+            |-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
+                |-jmp_code
+                    |-chakra!Js::InterpreterStackFrame::InterpreterThunk
 ```
 
 两次的调用流程大致是相同的，其中主要不同是因为，函数在第一次调用时候需要通过DeferredParsingThunk函数对其进行解析。其实函数只有在第一次调用时才进行进一步的初始化解析操作，这样设计主要是为了效率。而后续调用再直接解释执行。
@@ -94,7 +94,7 @@ chakra!NativeCodeGenerator::CheckCodeGenThunk:
 ```
 function test1(num)
 {
-	return num + 1 + 2 + 3;
+    return num + 1 + 2 + 3;
 }
 
 //触发jit
@@ -117,7 +117,7 @@ chakra!Js::ScriptFunction::`vftable':
 1d7280c0  00000012 00000000 07076c00 071080a0
 1d7280d0  0a510600 00000000 5fb0b454 00000101
 
-0:010> u poi(poi(07103050+4)+0x10)			    //jit code
+0:010> u poi(poi(07103050+4)+0x10)                //jit code
 0a510600 55              push    ebp
 0a510601 8bec            mov     ebp,esp
 0a510603 81fc5cc9d005    cmp     esp,5D0C95Ch
@@ -145,23 +145,23 @@ chakra!Js::ScriptFunction::`vftable':
 0a51064c 83d802          sbb     eax,2
 0a51064f 7c2f            jl      0a510680
 0a510651 8b5d14          mov     ebx,dword ptr [ebp+14h] //ebx = num
-0a510654 8bc3            mov     eax,ebx		//eax = num (num << 1 & 1)
-0a510656 d1f8            sar     eax,1			//eax = num >> 1
+0a510654 8bc3            mov     eax,ebx          //eax = num (num << 1 & 1)
+0a510656 d1f8            sar     eax,1            //eax = num >> 1
 0a510658 732f            jae     0a510689
 0a51065a 8bf0            mov     esi,eax
 0a51065c 8bc6            mov     eax,esi
-0a51065e 40              inc     eax			//num + 1
+0a51065e 40              inc     eax              //num + 1
 0a51065f 7040            jo      0a5106a1
 0a510661 8bc8            mov     ecx,eax
-0a510663 83c102          add     ecx,2			//num + 2
+0a510663 83c102          add     ecx,2            //num + 2
 0a510666 7045            jo      0a5106ad
 0a510668 8bc1            mov     eax,ecx
-0a51066a 83c003          add     eax,3			//num + 3
+0a51066a 83c003          add     eax,3            //num + 3
 0a51066d 704a            jo      0a5106b9
 0a51066f 8bc8            mov     ecx,eax
-0a510671 d1e1            shl     ecx,1			//ecx = num << 1
+0a510671 d1e1            shl     ecx,1            //ecx = num << 1
 0a510673 7050            jo      0a5106c5
-0a510675 41              inc     ecx			//ecx = num += 1
+0a510675 41              inc     ecx              //ecx = num += 1
 0a510676 8bd9            mov     ebx,ecx
 0a510678 8bc3            mov     eax,ebx
 0a51067a 5b              pop     ebx
@@ -177,8 +177,8 @@ Js::ScriptFunction对象中原本指向NativeCodeGenerator::CheckCodeGenThunk函
 
 ```
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-jit code
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-jit code
 ```
 
 调用jit函数时的调用栈如上所示，这就是chakra引擎调用jit函数的方法。
@@ -196,9 +196,9 @@ document.createElement("button");
 
 ```
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-chakra!Js::JavascriptExternalFunction::ExternalFunctionThunk //调用dom接口函数
-			|-dom_interface_function	//EDGEHTML!CFastDOM::CDocument::Trampoline_createElement
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-chakra!Js::JavascriptExternalFunction::ExternalFunctionThunk //调用dom接口函数
+            |-dom_interface_function    //EDGEHTML!CFastDOM::CDocument::Trampoline_createElement
 ```
 
 当调用dom接口函数时，Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >函数及后续的处理流程中所使用的Function对象与前面不同，使用的是Js::JavascriptExternalFunction对象。然后与前面的函数调用类似，也是通过解析对象内的函数指针，并对其进行调用，最终进入到想要调用的DOM接口函数中。
@@ -228,13 +228,13 @@ chakra!Js::JavascriptExternalFunction::ExternalFunctionThunk:
 ```
 //第一次调用
 chakra!Js::InterpreterStackFrame::OP_CallCommon<Js::OpLayoutDynamicProfile<Js::OpLayoutT_CallI<Js::LayoutSizePolicy<0> > > >
-	|-chakra!Js::JavascriptFunction::CallFunction<1>
-		|-chakra!Js::JavascriptFunction::DeferredParsingThunk
-			|-chakra!Js::JavascriptFunction::DeferredParse    //获取NativeCodeGenerator::CheckCodeGenThunk函数
-			|-chakra!NativeCodeGenerator::CheckCodeGenThunk
-				|-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
-					|-jmp_code	
-						|-chakra!Js::InterpreterStackFrame::InterpreterThunk
+    |-chakra!Js::JavascriptFunction::CallFunction<1>
+        |-chakra!Js::JavascriptFunction::DeferredParsingThunk
+            |-chakra!Js::JavascriptFunction::DeferredParse    //获取NativeCodeGenerator::CheckCodeGenThunk函数
+            |-chakra!NativeCodeGenerator::CheckCodeGenThunk
+                |-chakra!Js::InterpreterStackFrame::DelayDynamicInterpreterThunk
+                    |-jmp_code
+                        |-chakra!Js::InterpreterStackFrame::InterpreterThunk
 ```
 
 在前面没有提到的是，上面调用流程中的Js::JavascriptFunction::DeferredParse函数。此函数内部会进行函数解析相关的工作，并且返回NativeCodeGenerator::CheckCodeGenThunk函数的指针，然后在返回Js::JavascriptFunction::DeferredParsingThunk函数后对其进行调用。NativeCodeGenerator::CheckCodeGenThunk函数的指针也是通过解析Js::JavascriptFunction对象获得的。代码如下。
