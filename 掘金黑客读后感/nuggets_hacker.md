@@ -1,8 +1,3 @@
-Title: 掘金黑客
-Date: 2013-10-02
-Tags: 阅读
-
-
 ![nuggets_hacker][nuggets_hacker]
 
 

@@ -1,8 +1,3 @@
-Title: A Bug Hunter's Dary
-Date: 2013-10-03
-Tags: 漏洞挖掘,阅读
-
-
 ![a_bug_hunter_diary_head][a_bug_hunter_diary_head]
 
 

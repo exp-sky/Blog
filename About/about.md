@@ -1,13 +1,3 @@
-Title: About
-
-Author: exp-sky
-
-Data: 2013-11-02
-
-Tags: About
-
-
-
 ![exp-sky](/About/images/exp-sky.jpg)
 
 * 喜欢计算机的很多方向，软件漏洞、编程、渗透测试。
